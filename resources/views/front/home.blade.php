@@ -4,7 +4,7 @@
 @section('main')
 {{-- <section class="section-0 lazy d-flex bg-image-style dark align-items-center " class="" data-bg="{{ asset('assets/images/banner5.jpg') }}"> --}}
     <section class="section-0 d-flex bg-image-style dark align-items-center" 
-    style="background-image: url('{{ asset('assets/images/banner6.jpg') }}');">
+    style="background-image: url('{{ asset('assets/images/banner7.jpg') }}');">
     <div class="container">
         <div class="row">
             <div class="col-12 col-xl-8">
