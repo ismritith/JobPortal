@@ -61,6 +61,7 @@
 @endsection
 
 @section('customJs')
+<script src="{{ asset('assets/js/jquery.js') }}"></script>
 <script>
     $(document).ready(function() {
         // Registration form submission
