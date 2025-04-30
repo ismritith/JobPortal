@@ -10,7 +10,7 @@
             <p class="mb-0 pb-0">{{ Session::get('success') }}</p>
         </div>
         @endif
-        
+
         @if(Session::has('error'))
         <div class="alert alert-danger">
             <p class="mb-0 pb-0">{{ Session::get('error') }}</p>
@@ -27,29 +27,29 @@
                             <label for="name" class="mb-2">Name*</label>
                             <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name">
                             <p></p>
-                        </div> 
+                        </div>
 
                         <div class="mb-3">
                             <label for="email" class="mb-2">Email*</label>
                             <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email">
                             <p></p>
-                        </div> 
+                        </div>
 
                         <div class="mb-3">
                             <label for="password" class="mb-2">Password*</label>
                             <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
                             <p></p>
-                        </div> 
+                        </div>
 
                         <div class="mb-3">
                             <label for="confirm_password" class="mb-2">Confirm Password*</label>
                             <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Please confirm Password">
                             <p></p>
-                        </div> 
+                        </div>
 
                         <button type="submit" class="btn btn-primary mt-2">Register</button>
                     </form>
-                    
+
                     <div class="mt-4 text-center">
                         <p>Have an account? <a href="{{ route('account.login') }}">Login</a></p>
                     </div>
@@ -69,7 +69,7 @@
             e.preventDefault();
 
             $.ajax({
-                url: 'http://localhost:8000/account/process-register',
+                url: '{{ route('account.processRegistration') }}',
                 type: 'post',
                 data: $(this).serializeArray(),
                 dataType: 'json',
@@ -80,28 +80,28 @@
 
                     if (response.status === false) {
                         var errors = response.errors;
-                        
+
                         if (errors.name) {
                             $("#name").addClass('is-invalid')
                                 .siblings('p')
                                 .addClass('invalid-feedback')
                                 .html(errors.name);
                         }
-                        
+
                         if (errors.email) {
                             $("#email").addClass('is-invalid')
                                 .siblings('p')
                                 .addClass('invalid-feedback')
                                 .html(errors.email);
                         }
-                        
+
                         if (errors.password) {
                             $("#password").addClass('is-invalid')
                                 .siblings('p')
                                 .addClass('invalid-feedback')
                                 .html(errors.password);
                         }
-                        
+
                         if (errors.confirm_password) {
                             $("#confirm_password").addClass('is-invalid')
                                 .siblings('p')
@@ -111,17 +111,17 @@
                     } else {
                         if (response.message) {
                             if ($('#registrationSuccessAlert').length === 0) {
-                                $('<div id="registrationSuccessAlert" class="alert alert-success mt-3">' + 
+                                $('<div id="registrationSuccessAlert" class="alert alert-success mt-3">' +
                                   response.message + '</div>').insertBefore('#registrationForm');
                             } else {
                                 $('#registrationSuccessAlert').text(response.message).show();
                             }
 
                             setTimeout(function() {
-                                window.location.href = "http://localhost:8000/account/login";
+                                window.location.href = "{{ route('account.login') }}";
                             }, 2000);
                         } else {
-                            window.location.href = "http://localhost:8000/account/login";
+                            window.location.href = "{{ route('account.login') }}";
                         }
                     }
                 },
@@ -139,7 +139,7 @@
             var formData = new FormData(this);
 
             $.ajax({
-                url: "http://localhost:8000/account/update-profile-pic",
+                url: "{{ route('account.updateProfilePic') }}", // Use Laravel route helper
                 type: 'post',
                 data: formData,
                 dataType: 'json',
@@ -152,7 +152,7 @@
                             $('#image-errors').html(errors.image);
                         }
                     } else {
-                        window.location.href = "http://localhost:8000/account/register";
+                        window.location.href = "{{ route('account.registration') }}";
                     }
                 },
                 error: function(xhr, status, error) {
@@ -169,4 +169,5 @@
         });
     });
 </script>
+@endsection
 
