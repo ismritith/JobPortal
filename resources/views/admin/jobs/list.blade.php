@@ -7,8 +7,9 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item"><a href="{{ route("admin.dashboard") }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route("admin.jobs") }}">Jobs</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </nav>
             </div>
@@ -23,7 +24,7 @@
                     <div class="card-body card-form">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h3 class="fs-4 mb-1">Users</h3>
+                                <h3 class="fs-4 mb-1">Jobs</h3>
                             </div>
                             <div style="margin-top: -10px;">
                             </div>
@@ -34,52 +35,48 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th scope="col">ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Created By</th>
+                                        <th scope="col">Date</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="border-0">
-                                    @if($users->isNotEmpty())
-                                        @foreach($users as $user)
-                                            <tr class="active">
-                                                <td>{{ $user->id }}
-                                                <td>
-                                                    <div class="job-name fw-500">{{ $user->name }}</div>
-                                                </td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->mobile }}<</td>
-                                                
-                                                <td>
-                                                    <div class="action-dots">
-                                                        <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="{{ route("admin.users.edit",$user->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-                                                            <li><a class="dropdown-item" href="#" onclick="deleteUser({{ $user->id }})"><i class="fa fa-trash" aria-hidden="true"></i> delete</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                    @if ($jobs->isNotEmpty())
+                                        @foreach ($jobs as $job)
+                                        <tr>
+                                            <td>{{ $job->id }}</td>
+                                            <td>
+                                                <p>{{ $job->title }}</p>
+                                                <p>Applicants: {{ $job->applications->count() }}</p>
+                                            </td>
+                                            <td>{{ $job->user->name }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($job->created_at)->format('d M, Y') }}</td>
+                                            <td>
+                                                <div class="action-dots">
+                                                    <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item" href="{{ route('admin.jobs.edit',$job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0);"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">
-                                                <i class="fa fa-briefcase mb-2" style="font-size: 1.5rem;"></i><br>
-                                                You haven’t posted any jobs yet.
-                                            </td>
+                                            <td colspan="5" class="text-center">No jobs found.</td>
                                         </tr>
                                     @endif
-                                </tbody>
+                                </tbody>                                
                                 
                                 
                             </table>
                         </div>
                     </div>
-
-                    {{ $users->links()}}
+                    {{ $jobs->links() }}
                 </div> 
           
             </div>

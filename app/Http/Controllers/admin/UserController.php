@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     public function index() {
-        $users = User::orderBy('created_at','DESC')->paginate(3);
+        $users = User::orderBy('created_at','DESC')->paginate(5);
         return view('admin.users.list',[
             'users' => $users
         ]);
@@ -53,6 +53,25 @@ class UserController extends Controller
                     'errors' => $validator->errors()
                 ]);
             }
+    }
+
+    public function destroy(Request $request){
+        $id = $request->id;
+
+        $user = User::find($id);
+
+        if ($user == null) {
+            session()->flash('error','User not found.');
+            return response()->json([
+                'status' => false,
+            ]);      
+        }  
+
+        $user->delete();
+        session()->flash('error','User deleted successfully.');
+        return response()->json([
+            'status' => true,
+        ]);    
     }
     
 }

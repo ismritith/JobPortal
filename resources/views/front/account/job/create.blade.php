@@ -89,7 +89,6 @@
                             <label for="" class="mb-2">Description<span class="req">*</span></label>
                             <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description"></textarea>
                             <p></p>
-
                         </div>
                         <div class="mb-4">
                             <label for="" class="mb-2">Benefits</label>
