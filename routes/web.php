@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
 });
 
 // Job Applicants Management
-// Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
+Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
 Route::middleware(['auth'])
     ->get('/admin/applications', [JobController::class, 'applications'])
     ->name('admin.applications');
@@ -49,7 +49,7 @@ Route::get('/applications/{id}', [JobController::class, 'viewApplication'])->nam
 Route::put('/applications/{id}/status', [JobController::class, 'updateStatus'])->name('admin.applications.updateStatus');
 
 
-// Account Routes
+// Account Routes, 
 Route::prefix('account')->group(function () {
 
     // Registration and Login Routes (accessible to all)

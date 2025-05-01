@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -50,6 +51,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('user2@123'),
             'role' => 'user',
         ]);
+
+    
 
     }
 }

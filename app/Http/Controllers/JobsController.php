@@ -22,7 +22,7 @@ class JobsController extends Controller
 
         $jobs = Job::where('status', 1);
 
-        // Search using keywords
+        // Search using keywords, sodheko matrai
         if (!empty($request->keyword)) {
             $jobs = $jobs->where(function ($query) use ($request) {
                 $query->orwhere('title', 'like', '%' . $request->keyword . '%');
