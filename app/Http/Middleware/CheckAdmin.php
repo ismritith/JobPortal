@@ -19,7 +19,7 @@ class CheckAdmin
             return redirect()->route('home');
         }
 
-        if ($request->user()->role != 'admin') {
+        if ($request->user()->role != 'superadmin') {
             session()->flash('error','You are not authorized to access this page.');
             return redirect()->route('account.profile');
         }

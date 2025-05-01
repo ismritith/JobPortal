@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function edit($id) {
         $user = User::findOrFail($id);
-        
+
         return view('admin.users.edit',[
             'user' => $user
         ]);
@@ -36,11 +36,12 @@ class UserController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->mobile= $request->mobile;
+                $user->profile_pic = $request->profile_pic;
                 $user->designation= $request->designation;
                 $user->save();
 
                 session()->flash('success', 'User information updated successfully.');
-                
+
                 return response()->json([
                     'status' => true,
                     'errors' => []
@@ -64,14 +65,14 @@ class UserController extends Controller
             session()->flash('error','User not found.');
             return response()->json([
                 'status' => false,
-            ]);      
-        }  
+            ]);
+        }
 
         $user->delete();
         session()->flash('error','User deleted successfully.');
         return response()->json([
             'status' => true,
-        ]);    
+        ]);
     }
-    
+
 }

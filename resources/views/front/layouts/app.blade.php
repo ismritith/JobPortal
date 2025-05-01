@@ -17,6 +17,34 @@
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/x-icon" href="#">
 
+    <style>
+        .navbar-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adjust spacing between items */
+        }
+
+        .navbar-nav .nav-item {
+            flex: 1 1 auto; /* Make items flexible */
+            text-align: center; /* Center align text */
+        }
+
+        .btn {
+            padding: 0.375rem 0.75rem; /* Adjust button padding */
+            font-size: 0.875rem; /* Shrink button font size */
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                gap: 5px; /* Reduce spacing further for smaller screens */
+            }
+
+            .btn {
+                padding: 0.25rem 0.5rem; /* Further shrink button padding */
+                font-size: 0.75rem; /* Further shrink button font size */
+            }
+        }
+    </style>
 </head>
 <body data-instant-intensity="mousedown">
 
@@ -31,35 +59,35 @@
                 <ul class="navbar-nav ms-0 ms-sm-0 me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
-                    </li>	
-    
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ route('jobs') }}">Find Jobs</a>
-                    </li>	
-                    
+                    </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="jobs.html">Quick Apply </a>
-                    </li>	
-    
+                        <a class="nav-link" aria-current="page" href="#">Quick Apply </a>
+                    </li>
+
+                    {{--  <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">Live Chat Support</a>
+                    </li>  --}}
+
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="jobs.html">Live Chat Support</a>
-                    </li>	
-    
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="jobs.html">Blog/Insights </a>
-                    </li>	
-                </ul>		
-                
+                        <a class="nav-link" aria-current="page" href="#">Blog/Insights </a>
+                    </li>
+                </ul>
+
                 @if (!Auth::check())
-                    <a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}" type="submit">Login</a>			
+                    <a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}" type="submit">Login</a>
                 @else
-                    @if (Auth::user()->role == 'admin')
-                        <a class="btn btn-outline-primary me-2" href="{{ route('admin.dashboard') }}" type="submit">Admin</a>				
+                    @if (Auth::user()->role == 'superadmin')
+                        <a class="btn btn-outline-primary me-2" href="{{ route('admin.dashboard') }}" type="submit">Dashboard</a>
                     @endif
-                    <a class="btn btn-outline-primary me-2" href="{{ route('account.profile') }}" type="submit">Account</a>			
+                    <a class="btn btn-outline-primary me-2" href="{{ route('account.profile') }}" type="submit">Profile & Activities</a>
                 @endif
-    
-                <a class="btn btn-primary" href="post-job.html" type="submit">Post a Job</a>
+
+                {{--  <a class="btn btn-primary" href="post-job.html" type="submit">Post a Job</a>  --}}
             </div>
         </div>
     </nav>
@@ -86,7 +114,7 @@
                 <button type="submit" class="btn btn-primary mx-3">Update</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-            
+
         </form>
       </div>
     </div>
@@ -230,7 +258,7 @@
             }
         });
 
-        
+
     });
 </script>
 

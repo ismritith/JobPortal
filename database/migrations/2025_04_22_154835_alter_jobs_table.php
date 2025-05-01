@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('jobs', function (Blueprint $table) {
-            $table->integer('status')->default(1)->after('company_website');
+            $table->integer('status')->default(0)->after('company_website');
             $table->integer('isFeatured')->after('status')->default(0);
-           
+
         });
     }
-    
+
 
     /**
      * Reverse the migrations.

@@ -15,11 +15,16 @@ class Job extends Model
         return $this->belongsTo(JobType::class);
 
     }
+    public function jobApplications()
 
+    {
+        return $this->hasMany(JobApplication::class);
+
+    }
     public function category()
 
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Category::class);
 
     }
 
