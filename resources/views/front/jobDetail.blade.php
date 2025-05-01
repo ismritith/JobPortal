@@ -1,7 +1,7 @@
 @extends('front.layouts.app')
 
 @section('main')
-<section class="section-4 bg-2">    
+<section class="section-4 bg-2">
     <div class="container pt-5">
         <div class="row">
             <div class="col">
@@ -11,7 +11,7 @@
                     </ol>
                 </nav>
             </div>
-        </div> 
+        </div>
     </div>
 
     <div class="container job_details_area">
@@ -73,7 +73,7 @@
                             <a href="#" class="btn btn-secondary">Save</a>
 
                             @if (Auth::check())
-                                <a href="javascript:void(0);" onclick="applyJob({{ $job->id }})" class="btn btn-primary">Apply</a>
+                                <button type="button" class="btn btn-primary" onclick="applyJob({{ $job->id }})">Apply</button>
                             @else
                                 <a href="{{ route('account.login') }}" class="btn btn-primary">Login to Apply</a>
                             @endif
@@ -142,7 +142,7 @@
 function applyJob(id) {
     if (confirm("Are you sure you want to apply for this job?")) {
         $.ajax({
-            url : '{{ route("applyJob") }}', 
+            url: '{{ route("applyJob") }}',
             method: 'POST',
             data: {
                 id: id,
@@ -150,12 +150,11 @@ function applyJob(id) {
             },
             dataType: 'json',
             success: function(response) {
-                console.log('Server response:', response); // Debugging
                 if (response.status === true) {
                     alert(response.message);
-                    location.reload(); 
+                    location.reload();
                 } else {
-                    alert(response.message); 
+                    alert(response.message);
                 }
             },
             error: function(xhr, status, error) {
