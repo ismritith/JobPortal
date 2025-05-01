@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('superadmin@123'),
-            'role' => 'superadmin', // Assuming 1 = Super Admin
+            'role' => 'superadmin',
         ]);
 
         // Admins
@@ -26,14 +26,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin One',
             'email' => 'admin1@gmail.com',
             'password' => Hash::make('admin1@123'),
-            'role' => 'admin', // Assuming 1 = Admin
+            'role' => 'admin',
         ]);
 
         User::create([
             'name' => 'Admin Two',
             'email' => 'admin2@gmail.com',
             'password' => Hash::make('admin2@123'),
-            'role' => 'admin', // Assuming 1 = Admin
+            'role' => 'admin',
         ]);
 
         // Regular Users
@@ -41,14 +41,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'User One',
             'email' => 'user1@gmail.com',
             'password' => Hash::make('user1@123'),
-            'role' => 'user', // Assuming 2 = Normal User
+            'role' => 'user',
         ]);
 
         User::create([
             'name' => 'User Two',
             'email' => 'user2@gmail.com',
             'password' => Hash::make('user2@123'),
-            'role' => 'user', // Assuming 2 = Normal User
+            'role' => 'user',
         ]);
 
     }

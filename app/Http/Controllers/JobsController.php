@@ -90,8 +90,15 @@ class JobsController extends Controller
 
     public function applyJob(Request $request)
     {
-        $jobId = $request->id;
+        $jobId = $request->job_id;
         $userId = Auth::id();
+
+        // Validate the incoming request
+        $request->validate([
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'resume' => 'required|file|mimes:pdf,doc,docx|max:2048', // Adjust max size as needed
+        ]);
 
         // Check if the job exists
         $job = Job::find($jobId);
@@ -122,11 +129,22 @@ class JobsController extends Controller
             ]);
         }
 
+        // Handle file upload
+        $resumePath = $request->file('resume')->store('resumes', 'public');
+
         // Create a new application
         $application = JobApplication::create([
             'job_id' => $jobId,
             'user_id' => $userId,
+            'username' => Auth::user()->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
             'employer_id' => $job->user_id,
+            'resume' => $resumePath,
+            'job_title' => $job->title,
+            'company_name' => $job->company_name,
+            'location' => $job->location,
+            'salary' => $job->salary,
             'status' => 'pending',
             'applied_date' => now()
         ]);
@@ -135,6 +153,31 @@ class JobsController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'You have successfully applied to the job.'
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $application = JobApplication::find($id);
+
+        if (!$application) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Application not found.',
+            ]);
+        }
+
+        // Update the status
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Application status updated successfully.',
         ]);
     }
 }

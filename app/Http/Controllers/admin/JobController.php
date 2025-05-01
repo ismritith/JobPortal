@@ -9,6 +9,7 @@ use App\models\Job;
 use App\models\Category;
 use App\models\JobType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class JobController extends Controller
@@ -113,23 +114,60 @@ class JobController extends Controller
         ]);
     }
 
-    public function applications($id)
+    // public function applications($id)
+    // {
+    //     if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'superadmin') {
+    //         abort(403, 'Unauthorized action.');
+    //     }
+    //     $job = Job::with(['applications.user', 'applications' => function($query) {
+    //         $query->orderBy('created_at', 'DESC');
+    //     }])->findOrFail($id);
+
+    //     return view('admin.jobs.applications', compact('job'));
+    // }
+
+    public function applications()
     {
-        if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'superadmin') {
-            abort(403, 'Unauthorized action.');
+        $user = Auth::user();
+
+        // Base query
+        $query = JobApplication::query();
+
+        // If not an admin/superadmin, restrict to only your own applications:
+        if (! in_array($user->role, ['admin', 'superadmin'])) {
+            $query->where('employer_id', $user->id);
         }
-        $job = Job::with(['applications.user', 'applications' => function($query) {
-            $query->orderBy('created_at', 'DESC');
-        }])->findOrFail($id);
 
-        return view('admin.jobs.applications', compact('job'));
+        // Select only the columns you care about, newest first
+        $applications = $query
+            ->orderBy('created_at', 'DESC')
+            ->get([
+                'id',
+                'job_id',
+                'username',
+                'email',
+                'phone',
+                'job_title',
+                'email',
+                'resume',
+                'user_id',
+                'employer_id',
+                'status',
+                'applied_date',
+            ]);
+
+        // Append the base path to the resume file name if necessary
+        foreach ($applications as $app) {
+            $app->resume = asset('storage/resumes/' . $app->resume); // Adjust the path as needed
+        }
+
+        return view('admin.jobs.applications', compact('applications'));
     }
-
 
     public function viewApplication($id)
     {
         $application = JobApplication::with(['user', 'job'])
-                        ->findOrFail($id);
+            ->findOrFail($id);
 
         return view('admin.applications.show', compact('application'));
     }
@@ -168,6 +206,3 @@ class JobController extends Controller
         return redirect()->back()->with('error', 'Resume not found');
     }
 }
-
-
-

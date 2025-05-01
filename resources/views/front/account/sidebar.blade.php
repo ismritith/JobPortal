@@ -34,9 +34,10 @@
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <a href="{{ route('account.logout') }}">Jobs Applied</a>
             </li>
-            @if(isset($job))
+            {{-- Only show for employers (or admins) --}}
+            @if (Auth::check() && in_array(Auth::user()->role, ['admin', 'superadmin']))
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <a href="{{ route('admin.jobs.applications', ['id' => $job->id]) }}">Applications</a>
+                    <a href="{{ route('admin.applications') }}">Applications</a>
                 </li>
             @endif
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">

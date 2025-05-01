@@ -28,22 +28,23 @@ Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob')
 
 
 // Dashboard Routes
-Route::group(['prefix' => 'admin','middleware' => 'checkRole'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'checkRole'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('admin.users');
     Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::post('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/jobs', [JobController::class, 'index'])->name('admin.jobs');
-    Route::get('/jobs/edit/{id}',[JobController::class,'edit'])->name('admin.jobs.edit');
-    Route::put('/jobs/{id}',[JobController::class,'update'])->name('admin.jobs.update');
-    Route::delete('/jobs',[JobController::class,'destroy'])->name('admin.jobs.destroy');
-
+    Route::get('/jobs/edit/{id}', [JobController::class, 'edit'])->name('admin.jobs.edit');
+    Route::put('/jobs/{id}', [JobController::class, 'update'])->name('admin.jobs.update');
+    Route::delete('/jobs', [JobController::class, 'destroy'])->name('admin.jobs.destroy');
 });
 
 // Job Applicants Management
 // Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
-Route::get('/jobs/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
+Route::middleware(['auth'])
+    ->get('/admin/applications', [JobController::class, 'applications'])
+    ->name('admin.applications');
 Route::get('/applications/{id}', [JobController::class, 'viewApplication'])->name('admin.applications.show');
 Route::put('/applications/{id}/status', [JobController::class, 'updateStatus'])->name('admin.applications.updateStatus');
 
