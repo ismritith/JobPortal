@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\JobApplication; 
 use App\models\Job;
 use App\models\Category;
 use App\models\JobType;
@@ -110,4 +111,59 @@ class JobController extends Controller
             'status' => true
         ]);
     }
+    
+    public function applications($id)
+    {
+        $job = Job::with(['applications.user', 'applications' => function($query) {
+            $query->orderBy('created_at', 'DESC');
+        }])->findOrFail($id);
+
+        return view('admin.jobs.applications', compact('job'));
+    }
+
+
+    public function viewApplication($id)
+    {
+        $application = JobApplication::with(['user', 'job'])
+                        ->findOrFail($id);
+
+        return view('admin.applications.show', compact('application'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected,pending'
+        ]);
+
+        $application = JobApplication::findOrFail($id);
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Status updated successfully'
+        ]);
+    }
+
+    /**
+     * Download applicant's resume
+     */
+    public function downloadResume($id)
+    {
+        $application = JobApplication::findOrFail($id);
+        
+        if ($application->resume) {
+            $path = storage_path('app/public/resumes/' . $application->resume);
+            
+            if (file_exists($path)) {
+                return response()->download($path);
+            }
+        }
+
+        return redirect()->back()->with('error', 'Resume not found');
+    }
 }
+
+    
+

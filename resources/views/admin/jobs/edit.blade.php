@@ -5,11 +5,11 @@
         <div class="container py-5">
             <div class="row">
                 <div class="col">
-                    <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
+                    <nav aria-label="breadcrumb" class="rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('admin.jobs') }}">Jobs</a></li>
-                            <li class="breadcrumb-item active">Edit</li>
+                            <li class="breadcrumb-item active">Edit Job</li>
                         </ol>
                     </nav>
                 </div>
@@ -20,8 +20,15 @@
                 </div>
                 <div class="col-lg-9">
                     @include('front.message')
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Edit Job Details</h2>
+                        <a href="{{ route('admin.jobs.applications', $job->id) }}" class="btn btn-info">
+                            <i class="fas fa-users"></i> Manage Applications
+                        </a>
+                    </div>
 
-                    <form action="{{ route('admin.jobs.update', $job->id) }}" method="POST">
+                    <form id="editJobForm" action="{{ route('admin.jobs.update', $job->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="card border-0 shadow mb-4 ">

@@ -10062,3 +10062,13 @@ button:hover,
 .pagination span{
   font-size: inherit;
 }
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35em 0.65em;
+}
+.bg-pending { background-color: #ffc107; color: #000; }
+.bg-approved { background-color: #198754; }
+.bg-rejected { background-color: #dc3545; }
+.table th { font-weight: 600; }
+.btn-group .btn { margin-right: 5px; }

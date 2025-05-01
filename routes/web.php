@@ -40,6 +40,11 @@ Route::group(['prefix' => 'admin','middleware' => 'checkRole'], function(){
     Route::delete('/jobs',[JobController::class,'destroy'])->name('admin.jobs.destroy');
 });
 
+// Job Applicants Management
+Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
+Route::get('/applications/{id}', [JobController::class, 'viewApplication'])->name('admin.applications.show');
+Route::put('/applications/{id}/status', [JobController::class, 'updateStatus'])->name('admin.applications.updateStatus');
+
 
 // Account Routes
 Route::prefix('account')->group(function () {
