@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,18 +13,43 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(10)->create();
+        // Super Admin
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@gmail.com',
+            'password' => Hash::make('superadmin@123'),
+            'role' => 'superadmin', // Assuming 1 = Super Admin
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Admins
+        User::create([
+            'name' => 'Admin One',
+            'email' => 'admin1@gmail.com',
+            'password' => Hash::make('admin1@123'),
+            'role' => 'admin', // Assuming 1 = Admin
+        ]);
 
-        // \App\Models\Category::factory(5)->create();
-        // \App\Models\JobType::factory(5)->create();
+        User::create([
+            'name' => 'Admin Two',
+            'email' => 'admin2@gmail.com',
+            'password' => Hash::make('admin2@123'),
+            'role' => 'admin', // Assuming 1 = Admin
+        ]);
 
-        // \App\Models\Job::factory(25)->create();
+        // Regular Users
+        User::create([
+            'name' => 'User One',
+            'email' => 'user1@gmail.com',
+            'password' => Hash::make('user1@123'),
+            'role' => 'user', // Assuming 2 = Normal User
+        ]);
 
+        User::create([
+            'name' => 'User Two',
+            'email' => 'user2@gmail.com',
+            'password' => Hash::make('user2@123'),
+            'role' => 'user', // Assuming 2 = Normal User
+        ]);
 
     }
 }
