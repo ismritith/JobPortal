@@ -14,34 +14,22 @@
                 </nav>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-lg-3">
                 @include('admin.sidebar')
             </div>
-            
+
             <div class="col-lg-9">
                 @include('front.message')
-                
+
                 <div class="card border-0 shadow mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h3 class="fs-4 mb-0">Applications for: {{ $job->title }}</h3>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
-                                    id="filterDropdown" data-bs-toggle="dropdown">
-                                Filter
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="?status=all">All Applications</a></li>
-                                <li><a class="dropdown-item" href="?status=pending">Pending</a></li>
-                                <li><a class="dropdown-item" href="?status=approved">Approved</a></li>
-                                <li><a class="dropdown-item" href="?status=rejected">Rejected</a></li>
-                            </ul>
-                        </div>
                     </div>
-                    
+
                     <div class="card-body">
-                        @if($applications->isEmpty())
+                        @if($job->applications->isEmpty())
                             <div class="alert alert-info">No applications found.</div>
                         @else
                             <div class="table-responsive">
@@ -49,52 +37,24 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Applicant</th>
-                                            <th>Email</th>
+                                            <th>Job</th>
+                                            <th>Job Type</th>
+                                            <th>Salary</th>
                                             <th>Applied On</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($applications as $application)
+                                        @foreach($job->applications as $application)
                                         <tr>
-                                            <td>
-                                                <a href="#" class="text-primary view-application" 
-                                                   data-id="{{ $application->id }}">
-                                                    {{ $application->user->name }}
-                                                </a>
-                                            </td>
-                                            <td>{{ $application->user->email }}</td>
+                                            <td>{{ $application->user->name }}</td>
+                                            <td>{{ $application->job->title }}</td>
+                                            <td>{{ $application->job->jobType->name }}</td>
+                                            <td>{{ $application->job->salary }}</td>
                                             <td>{{ $application->created_at->format('d M Y') }}</td>
-                                            <td>
-                                                <span class="badge bg-{{ getStatusColor($application->status) }}">
-                                                    {{ ucfirst($application->status) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-primary view-application" 
-                                                            data-id="{{ $application->id }}">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-success approve-application" 
-                                                            data-id="{{ $application->id }}">
-                                                        <i class="fas fa-check"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger reject-application" 
-                                                            data-id="{{ $application->id }}">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
-                            
-                            <div class="mt-3">
-                                {{ $applications->links() }}
                             </div>
                         @endif
                     </div>
@@ -135,9 +95,9 @@ $(document).ready(function() {
     $('.view-application').click(function() {
         var applicationId = $(this).data('id');
         $('#applicationModal').modal('show');
-        
+
         $.ajax({
-            url: '/admin.jobs.applications/' + applicationId,
+            url: '{{ route('admin.applications.show', ['id' => '__applicationId__']) }}'.replace('__applicationId__', applicationId),
             type: 'GET',
             success: function(response) {
                 $('#applicationDetailContent').html(response);
@@ -149,7 +109,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     // Approve Application
     $('.approve-application').click(function() {
         if (confirm('Are you sure you want to approve this application?')) {
@@ -157,7 +117,7 @@ $(document).ready(function() {
             updateApplicationStatus(applicationId, 'approved');
         }
     });
-    
+
     // Reject Application
     $('.reject-application').click(function() {
         if (confirm('Are you sure you want to reject this application?')) {
@@ -165,10 +125,10 @@ $(document).ready(function() {
             updateApplicationStatus(applicationId, 'rejected');
         }
     });
-    
+
     function updateApplicationStatus(applicationId, status) {
         $.ajax({
-            url: '/admin/applications/' + applicationId + '/status',
+            url: '{{ route('admin.applications.updateStatus', ['id' => '__applicationId__']) }}'.replace('__applicationId__', applicationId),
             type: 'PUT',
             data: {
                 status: status,
@@ -184,10 +144,6 @@ $(document).ready(function() {
     }
 });
 </script>
-
-<style>
-
-</style>
 @endsection
 
 @php

@@ -130,6 +130,7 @@ class JobsController extends Controller
             'status' => 'pending',
             'applied_date' => now()
         ]);
+        $application->save();
 
         return response()->json([
             'status' => true,

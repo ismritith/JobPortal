@@ -4,10 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\JobApplication; 
+use App\Models\JobApplication;
 use App\models\Job;
 use App\models\Category;
 use App\models\JobType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class JobController extends Controller
@@ -111,9 +112,12 @@ class JobController extends Controller
             'status' => true
         ]);
     }
-    
+
     public function applications($id)
     {
+        if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'superadmin') {
+            abort(403, 'Unauthorized action.');
+        }
         $job = Job::with(['applications.user', 'applications' => function($query) {
             $query->orderBy('created_at', 'DESC');
         }])->findOrFail($id);
@@ -152,10 +156,10 @@ class JobController extends Controller
     public function downloadResume($id)
     {
         $application = JobApplication::findOrFail($id);
-        
+
         if ($application->resume) {
             $path = storage_path('app/public/resumes/' . $application->resume);
-            
+
             if (file_exists($path)) {
                 return response()->download($path);
             }
@@ -165,5 +169,5 @@ class JobController extends Controller
     }
 }
 
-    
+
 

@@ -24,7 +24,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/jobs', [JobsController::class, 'index'])->name('jobs');
 Route::get('/jobs/detail/{id}', [JobsController::class, 'detail'])->name('jobDetail');
-Route::put('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob');
+Route::post('/apply-job', [JobsController::class, 'applyJob'])->name('applyJob');
 
 
 // Dashboard Routes
@@ -38,10 +38,12 @@ Route::group(['prefix' => 'admin','middleware' => 'checkRole'], function(){
     Route::get('/jobs/edit/{id}',[JobController::class,'edit'])->name('admin.jobs.edit');
     Route::put('/jobs/{id}',[JobController::class,'update'])->name('admin.jobs.update');
     Route::delete('/jobs',[JobController::class,'destroy'])->name('admin.jobs.destroy');
+
 });
 
 // Job Applicants Management
-Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
+// Route::get('/jobs/{id}/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
+Route::get('/jobs/applications', [JobController::class, 'applications'])->name('admin.jobs.applications');
 Route::get('/applications/{id}', [JobController::class, 'viewApplication'])->name('admin.applications.show');
 Route::put('/applications/{id}/status', [JobController::class, 'updateStatus'])->name('admin.applications.updateStatus');
 
@@ -52,7 +54,7 @@ Route::prefix('account')->group(function () {
     // Registration and Login Routes (accessible to all)
     Route::get('/register', [AccountController::class, 'registration'])->name('account.registration');
     Route::post('/account/process-register', [AccountController::class, 'processRegistration'])->name('account.processRegistration');
-    
+
     Route::get('/login', [AccountController::class, 'login'])->name('account.login');
     Route::post('/authenticate', [AccountController::class, 'authenticate'])->name('account.authenticate');
 
